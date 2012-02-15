@@ -2,7 +2,9 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<bean id="uk.ac.ox.oucs.member.provider.MemberProfileProvider" class="uk.ac.ox.oucs.member.provider.MemberProfileProvider"
+	<bean id="uk.ac.ox.oucs.member.provider.MemberProfileProvider"
+				class="uk.ac.ox.oucs.member.provider.MemberProfileProvider"
 				parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" singleton="true">
+		<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
 	</bean>
 </beans>

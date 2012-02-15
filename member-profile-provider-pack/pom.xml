@@ -23,5 +23,10 @@
 			<artifactId>entitybroker-pack</artifactId>
 			<type>war</type>
 		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-component</artifactId>
+			<type>war</type>
+		</dependency>
 	</dependencies>
 </project>
