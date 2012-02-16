@@ -5,7 +5,11 @@
 	<bean id="uk.ac.ox.oucs.member.provider.MemberProfileProvider"
 				class="uk.ac.ox.oucs.member.provider.MemberProfileProvider"
 				parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" singleton="true">
-		<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+		<property name="memberProvider">
+			<bean class="uk.ac.ox.oucs.member.supplier.KernelMemberProvider">
+				<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+			</bean>
+		</property>
 		<property name="suppliers">
 			<list>
 				<bean class="uk.ac.ox.oucs.member.supplier.SakaiSupplier">
@@ -17,6 +21,5 @@
 				</bean>
 			</list>
 		</property>
-
 	</bean>
 </beans>
