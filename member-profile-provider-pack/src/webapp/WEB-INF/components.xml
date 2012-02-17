@@ -17,7 +17,7 @@
 				</bean>
 				<bean class="uk.ac.ox.oucs.member.supplier.Profile2Supplier">
 					<property name="overrideInfo" value="false"/>
-					<property name="profileService" ref="org.sakaiproject.profile2.service.ProfileService"/>
+					<property name="profileLogic" ref="org.sakaiproject.profile2.logic.ProfileLogic"/>
 				</bean>
 			</list>
 		</property>

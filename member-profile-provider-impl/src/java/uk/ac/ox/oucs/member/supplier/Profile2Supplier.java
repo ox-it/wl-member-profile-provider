@@ -1,9 +1,10 @@
 package uk.ac.ox.oucs.member.supplier;
 
 import java.util.Collection;
+import java.util.Collections;
 
+import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.model.Person;
-import org.sakaiproject.profile2.service.ProfileService;
 import uk.ac.ox.oucs.member.model.MemberProfile;
 
 /**
@@ -11,12 +12,12 @@ import uk.ac.ox.oucs.member.model.MemberProfile;
  */
 public class Profile2Supplier implements Supplier
 {
-	private ProfileService profileService;
 	private boolean overrideInfo;
+	private ProfileLogic profileLogic;
 
-	public void setProfileService(ProfileService profileService)
+	public void setProfileLogic(ProfileLogic profileLogic)
 	{
-		this.profileService = profileService;
+		this.profileLogic = profileLogic;
 	}
 
 	public void setOverrideInfo(boolean overrideInfo)
@@ -26,7 +27,9 @@ public class Profile2Supplier implements Supplier
 
 	public void supplyInformation(MemberProfile memberProfile)
 	{
-		Collection<Person> connections = profileService.getConnectionsForUser(memberProfile.getId());
+		//TODO : Use the actual profile API
+		// Collection<Person> connections = profileService.getConnectionsForUser(memberProfile.getId());
+		Collection<Person> connections = Collections.singleton(profileLogic.getPerson(memberProfile.getId()));
 		for (Person connection : connections)
 		{
 			if (overrideInfo)
