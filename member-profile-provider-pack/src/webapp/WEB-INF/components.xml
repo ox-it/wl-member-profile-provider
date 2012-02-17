@@ -16,7 +16,7 @@
 					<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
 				</bean>
 				<bean class="uk.ac.ox.oucs.member.supplier.Profile2Supplier">
-					<property name="overrideInfo" value="false"/>
+					<property name="behaviour" value="ADD_UNEXISTING"/>
 					<property name="profileLogic" ref="org.sakaiproject.profile2.logic.ProfileLogic"/>
 				</bean>
 			</list>
