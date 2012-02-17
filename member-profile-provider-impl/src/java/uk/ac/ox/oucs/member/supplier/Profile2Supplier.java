@@ -12,17 +12,17 @@ import uk.ac.ox.oucs.member.model.MemberProfile;
  */
 public class Profile2Supplier implements Supplier
 {
-	private boolean overrideInfo;
 	private ProfileLogic profileLogic;
+	private Behaviour behaviour = Behaviour.ADD_UNEXISTING;
 
 	public void setProfileLogic(ProfileLogic profileLogic)
 	{
 		this.profileLogic = profileLogic;
 	}
 
-	public void setOverrideInfo(boolean overrideInfo)
+	public void setBehaviour(Behaviour behaviour)
 	{
-		this.overrideInfo = overrideInfo;
+		this.behaviour = behaviour;
 	}
 
 	public void supplyInformation(MemberProfile memberProfile)
@@ -32,15 +32,36 @@ public class Profile2Supplier implements Supplier
 		Collection<Person> connections = Collections.singleton(profileLogic.getPerson(memberProfile.getId()));
 		for (Person connection : connections)
 		{
-			if (overrideInfo)
+			switch (behaviour)
 			{
-				overrideExistingInformation(memberProfile, connection);
-			}
-			else
-			{
-				addUnexistingInformation(memberProfile, connection);
+				case OVERRIDE:
+					overrideExistingInformation(memberProfile, connection);
+					break;
+				case CONTACTENATE:
+					concatenateExistingInformation(memberProfile, connection);
+					break;
+				case ADD_UNEXISTING:
+				default:
+					addUnexistingInformation(memberProfile, connection);
 			}
 		}
+	}
+
+	private void concatenateExistingInformation(MemberProfile memberProfile, Person person)
+	{
+		memberProfile.setEmailAddress(concatenateNullSafe(memberProfile.getEmailAddress(), person.getProfile().getEmail()));
+		memberProfile.setPhotoUrl(concatenateNullSafe(memberProfile.getPhotoUrl(), person.getProfile().getImageUrl()));
+		memberProfile.setPhoneNumber(concatenateNullSafe(memberProfile.getPhoneNumber(), person.getProfile().getWorkphone()));
+		memberProfile.setDescription(concatenateNullSafe(memberProfile.getDescription(), person.getProfile().getPersonalSummary()));
+	}
+
+	private String concatenateNullSafe(String previousValue, String addedValue)
+	{
+		if (previousValue == null)
+			return addedValue;
+		if (addedValue == null)
+			return previousValue;
+		return previousValue + ", " + addedValue;
 	}
 
 	private void addUnexistingInformation(MemberProfile memberProfile, Person person)
@@ -65,5 +86,12 @@ public class Profile2Supplier implements Supplier
 			memberProfile.setPhoneNumber(person.getProfile().getWorkphone());
 		if (person.getProfile().getPersonalSummary() != null)
 			memberProfile.setDescription(person.getProfile().getPersonalSummary());
+	}
+
+	public static enum Behaviour
+	{
+		OVERRIDE,
+		ADD_UNEXISTING,
+		CONTACTENATE
 	}
 }
