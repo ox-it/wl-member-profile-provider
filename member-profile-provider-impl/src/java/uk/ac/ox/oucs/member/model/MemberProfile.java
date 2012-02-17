@@ -13,6 +13,8 @@ public class MemberProfile
 	private String phoneNumber;
 	private String description;
 	private String photoUrl;
+	private String eid;
+	private String diplayId;
 
 	public String getId()
 	{
@@ -92,5 +94,25 @@ public class MemberProfile
 	public void setPhotoUrl(String photoUrl)
 	{
 		this.photoUrl = photoUrl;
+	}
+
+	public String getEid()
+	{
+		return eid;
+	}
+
+	public void setEid(String eid)
+	{
+		this.eid = eid;
+	}
+
+	public String getDiplayId()
+	{
+		return diplayId;
+	}
+
+	public void setDiplayId(String diplayId)
+	{
+		this.diplayId = diplayId;
 	}
 }

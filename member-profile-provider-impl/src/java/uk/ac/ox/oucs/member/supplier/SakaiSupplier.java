@@ -25,6 +25,8 @@ public class SakaiSupplier implements Supplier
 			memberProfile.setFirstname(user.getFirstName());
 			memberProfile.setLastname(user.getLastName());
 			memberProfile.setEmailAddress(user.getEmail());
+			memberProfile.setEid(user.getEid());
+			memberProfile.setDiplayId(user.getDisplayId());
 		}
 		catch (UserNotDefinedException e)
 		{
