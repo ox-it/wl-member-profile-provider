@@ -51,6 +51,8 @@ public class Profile2Supplier implements Supplier
 			memberProfile.setPhotoUrl(person.getProfile().getImageUrl());
 		if (memberProfile.getPhoneNumber() == null)
 			memberProfile.setPhoneNumber(person.getProfile().getWorkphone());
+		if (memberProfile.getDescription() == null)
+			memberProfile.setDescription(person.getProfile().getPersonalSummary());
 	}
 
 	private void overrideExistingInformation(MemberProfile memberProfile, Person person)
@@ -61,5 +63,7 @@ public class Profile2Supplier implements Supplier
 			memberProfile.setPhotoUrl(person.getProfile().getImageUrl());
 		if (person.getProfile().getWorkphone() != null)
 			memberProfile.setPhoneNumber(person.getProfile().getWorkphone());
+		if (person.getProfile().getPersonalSummary() != null)
+			memberProfile.setDescription(person.getProfile().getPersonalSummary());
 	}
 }
