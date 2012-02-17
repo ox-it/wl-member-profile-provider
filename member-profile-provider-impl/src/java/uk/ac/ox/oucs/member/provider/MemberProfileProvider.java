@@ -35,7 +35,7 @@ public class MemberProfileProvider extends AbstractEntityProvider implements Res
 		return "memberProfile";
 	}
 
-	public Object getEntity(EntityReference ref)
+	public Collection<MemberProfile> getEntity(EntityReference ref)
 	{
 		String siteId = ref.getId();
 		return getMembersProfiles(siteId);
