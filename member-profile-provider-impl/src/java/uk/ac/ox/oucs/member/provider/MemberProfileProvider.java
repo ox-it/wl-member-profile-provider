@@ -32,7 +32,7 @@ public class MemberProfileProvider extends AbstractEntityProvider implements Res
 
 	public String getEntityPrefix()
 	{
-		return "memberProfile";
+		return "site-members";
 	}
 
 	public Collection<MemberProfile> getEntity(EntityReference ref)
