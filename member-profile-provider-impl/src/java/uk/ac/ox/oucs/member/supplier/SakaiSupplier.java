@@ -17,7 +17,7 @@ public class SakaiSupplier implements Supplier
 		this.userDirectoryService = userDirectoryService;
 	}
 
-	public MemberProfile supplyInformation(MemberProfile memberProfile)
+	public void supplyInformation(MemberProfile memberProfile)
 	{
 		try
 		{
@@ -30,6 +30,5 @@ public class SakaiSupplier implements Supplier
 		{
 			e.printStackTrace(); //TODO: Ignore this exception ?
 		}
-		return memberProfile;
 	}
 }

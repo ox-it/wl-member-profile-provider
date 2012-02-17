@@ -24,7 +24,7 @@ public class Profile2Supplier implements Supplier
 		this.overrideInfo = overrideInfo;
 	}
 
-	public MemberProfile supplyInformation(MemberProfile memberProfile)
+	public void supplyInformation(MemberProfile memberProfile)
 	{
 		Collection<Person> connections = profileService.getConnectionsForUser(memberProfile.getId());
 		for (Person connection : connections)
@@ -38,7 +38,6 @@ public class Profile2Supplier implements Supplier
 				addUnexistingInformation(memberProfile, connection);
 			}
 		}
-		return memberProfile;
 	}
 
 	private void addUnexistingInformation(MemberProfile memberProfile, Person person)

@@ -7,5 +7,5 @@ import uk.ac.ox.oucs.member.model.MemberProfile;
  */
 public interface Supplier
 {
-	MemberProfile supplyInformation(MemberProfile memberProfile);
+	void supplyInformation(MemberProfile memberProfile);
 }

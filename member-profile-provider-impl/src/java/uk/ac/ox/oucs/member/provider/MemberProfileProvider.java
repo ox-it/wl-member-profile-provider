@@ -51,15 +51,13 @@ public class MemberProfileProvider extends AbstractEntityProvider implements Res
 			{
 				try
 				{
-					profile = supplier.supplyInformation(profile);
+					supplier.supplyInformation(profile);
 				}
 				catch (Exception ignore)
 				{
 					//Nothing should interrupt this call
 				}
 			}
-
-			profiles.add(profile);
 		}
 
 		return profiles;
