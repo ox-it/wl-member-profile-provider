@@ -8,7 +8,18 @@
 		<property name="memberProvider">
 			<bean class="uk.ac.ox.oucs.member.supplier.KernelMemberProvider">
 				<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+				<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
+				<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
 			</bean>
+			<!-- Basic kernel listing
+			<bean class="uk.ac.ox.oucs.member.supplier.RosterMemberProvider">
+				<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+				<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
+				<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
+				<property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService"/>
+				<property name="privacyManager" ref="org.sakaiproject.api.privacy.PrivacyManager"/>
+			</bean>
+			-->
 		</property>
 		<property name="suppliers">
 			<list>

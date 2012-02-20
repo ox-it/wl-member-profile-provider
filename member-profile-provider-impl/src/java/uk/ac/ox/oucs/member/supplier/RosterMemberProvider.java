@@ -2,7 +2,6 @@ package uk.ac.ox.oucs.member.supplier;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,25 +16,19 @@ import org.sakaiproject.api.privacy.PrivacyManager;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Member;
-import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserDirectoryService;
 import uk.ac.ox.oucs.member.model.MemberProfile;
 
 /**
  * @author Colin Hebert
  */
-public class RosterMemberProvider implements MemberProvider
+public class RosterMemberProvider extends AbstractMemberProvider
 {
 	private AuthzGroupService authzGroupService;
 	private PrivacyManager privacyManager;
-	private SecurityService securityService;
-	private SiteService siteService;
-	private UserDirectoryService userDirectoryService;
 
 	//TODO: Replace with an actual service once roster is fixed? See SAK-21818
 	private RosterService rosterService = new RosterService();
@@ -50,29 +43,15 @@ public class RosterMemberProvider implements MemberProvider
 		this.privacyManager = privacyManager;
 	}
 
-	public void setSecurityService(SecurityService securityService)
-	{
-		this.securityService = securityService;
-	}
-
-	public void setSiteService(SiteService siteService)
-	{
-		this.siteService = siteService;
-	}
-
-	public void setUserDirectoryService(UserDirectoryService userDirectoryService)
-	{
-		this.userDirectoryService = userDirectoryService;
-	}
-
 	public void setRosterService(RosterService rosterService)
 	{
 		this.rosterService = rosterService;
 	}
 
-	public Collection<MemberProfile> getMembers(String siteId)
+	@Override
+	public Collection<MemberProfile> getMembersSecure(String siteId)
 	{
-		Collection<Participant> participants = getSiteParticipants(siteId);
+		Collection<Participant> participants = rosterService.getSiteRoster(siteId);
 		Collection<MemberProfile> profiles = new ArrayList<MemberProfile>(participants.size());
 		for (Participant participant : participants)
 		{
@@ -83,22 +62,10 @@ public class RosterMemberProvider implements MemberProvider
 
 	}
 
-	public Collection<MemberProfile> getMembersWithRole(String siteId, String roleId)
+	@Override
+	public Collection<MemberProfile> getMembersWithRoleSecure(String siteId, String roleId)
 	{
 		return getMembers(siteId); //TODO, filter roles?
-	}
-
-	private Collection<Participant> getSiteParticipants(String siteId)
-	{
-		List<Participant> participants;
-		User currentUser = userDirectoryService.getCurrentUser();
-
-		//Check permission to list users
-		if (!securityService.unlock(currentUser, SiteService.SECURE_VIEW_ROSTER, siteId))
-			participants = rosterService.getSiteRoster(siteId);
-		else
-			participants = Collections.emptyList();
-		return participants;
 	}
 
 	private MemberProfile getProfileFromParticipant(Participant participant)
@@ -119,7 +86,7 @@ public class RosterMemberProvider implements MemberProvider
 		public List<Participant> getSiteRoster(String siteId)
 		{
 			List<Participant> participants;
-			User currentUser = userDirectoryService.getCurrentUser();
+			User currentUser = getUserDirectoryService().getCurrentUser();
 			boolean viewAllInSite = userHasSitePermission(currentUser,
 					RosterFunctions.ROSTER_FUNCTION_VIEWALL, siteId);
 
@@ -150,7 +117,7 @@ public class RosterMemberProvider implements MemberProvider
 			Site site;
 			try
 			{
-				site = siteService.getSite(siteId);
+				site = getSiteService().getSite(siteId);
 			}
 			catch (IdUnusedException ide)
 			{
@@ -297,7 +264,7 @@ public class RosterMemberProvider implements MemberProvider
 			}
 
 			// Get the user objects
-			List<User> users = userDirectoryService.getUsers(userIds);
+			List<User> users = getUserDirectoryService().getUsers(userIds);
 			for (User user : users)
 			{
 				String role = roleMap.get(user.getId());
@@ -312,7 +279,7 @@ public class RosterMemberProvider implements MemberProvider
 				return false;
 
 			String siteReference = getSiteReference(siteId);
-			return securityService.unlock(user, permissionName, siteReference);
+			return getSecurityService().unlock(user, permissionName, siteReference);
 		}
 
 		private boolean userHasGroupPermission(User user, String permissionName, String groupReference)
@@ -324,14 +291,13 @@ public class RosterMemberProvider implements MemberProvider
 
 		private String getSiteReference(String siteId)
 		{
-			return siteService.siteReference(siteId);
+			return getSiteService().siteReference(siteId);
 		}
 
 		private class ParticipantImpl implements Participant
 		{
 			protected User user;
 			protected String roleTitle;
-			protected String groupsString;
 
 			/**
 			 * Constructs a ParticipantImpl.
@@ -356,19 +322,9 @@ public class RosterMemberProvider implements MemberProvider
 				return roleTitle;
 			}
 
-			public void setRoleTitle(String roleTitle)
-			{
-				this.roleTitle = roleTitle;
-			}
-
 			public User getUser()
 			{
 				return user;
-			}
-
-			public void setUser(User user)
-			{
-				this.user = user;
 			}
 
 			public boolean isProfilePhotoPublic()
