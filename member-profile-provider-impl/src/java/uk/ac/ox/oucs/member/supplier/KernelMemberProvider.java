@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.sakaiproject.authz.api.Member;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserDirectoryService;
 import uk.ac.ox.oucs.member.model.MemberProfile;
 
 /**
@@ -15,7 +18,18 @@ import uk.ac.ox.oucs.member.model.MemberProfile;
 public class KernelMemberProvider implements MemberProvider
 {
 	private SiteService siteService;
+	private UserDirectoryService userDirectoryService;
+	private SecurityService securityService;
 
+	public void setSecurityService(SecurityService securityService)
+	{
+		this.securityService = securityService;
+	}
+
+	public void setUserDirectoryService(UserDirectoryService userDirectoryService)
+	{
+		this.userDirectoryService = userDirectoryService;
+	}
 
 	public void setSiteService(SiteService siteService)
 	{
@@ -44,8 +58,14 @@ public class KernelMemberProvider implements MemberProvider
 		Collection<Member> members;
 		try
 		{
-			//TODO: Check access rights !
-			members = siteService.getSite(siteId).getMembers();
+			User currentUser = userDirectoryService.getCurrentUser();
+
+			//Check permission to list users
+			if (securityService.unlock(currentUser, SiteService.SECURE_VIEW_ROSTER, siteId))
+				members = siteService.getSite(siteId).getMembers();
+			else
+				members = Collections.emptyList();
+
 		}
 		catch (IdUnusedException e)
 		{
