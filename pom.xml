@@ -19,6 +19,9 @@
 		<sakai.kernel.version>1.2.5ox1-SNAPSHOT</sakai.kernel.version>
 		<spring.version>2.5.6.SEC01</spring.version>
 		<profile2.version>1.4.2</profile2.version>
+		<roster.version>2.8-SNAPSHOT</roster.version>
+		<sakai-privacy.version>1.1.3</sakai-privacy.version>
+		<profile.version>2.8.2</profile.version>
 	</properties>
 
 	<modules>
@@ -47,6 +50,24 @@
 				<version>${sakai.kernel.version}</version>
 				<scope>provided</scope>
 				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>org.sakaiproject</groupId>
+				<artifactId>sakai-roster-api</artifactId>
+				<version>${roster.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.sakaiproject.common</groupId>
+				<artifactId>sakai-privacy-api</artifactId>
+				<version>${sakai-privacy.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.sakaiproject.profile</groupId>
+				<artifactId>profile-api</artifactId>
+				<version>${profile.version}</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
