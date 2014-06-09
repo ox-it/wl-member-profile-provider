@@ -1,1 +1,3 @@
 Provider for site members profiles
+
+This was written to allow site members profiles to be loaded by members of a site and for the profiles to include information entered into the profile tool. This has not been used in production although should be feature complete. It was not rolled into a release as the feature was no longer considered essential.
